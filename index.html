@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DBA Scripting Mastery — Master Course | Kudrant Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --cyan: #1FA6C0;
+    --light: #EAF6F8;
+    --ivory: #F8F5EF;
+    --grey: #5E5A53;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--ivory);
+    color: #222;
+  }
+  header {
+    background: linear-gradient(135deg, var(--navy), #24365f);
+    color: white;
+    padding: 34px 24px;
+    text-align: center;
+  }
+  header .kicker { color: var(--cyan); letter-spacing: 2px; font-weight: 700; font-size: 12px; text-transform: uppercase; }
+  header h1 { font-size: 30px; margin: 6px 0 4px; }
+  header p.sub { font-size: 14px; color: #cfd8e8; margin: 0; }
+
+  .layout {
+    display: flex;
+    max-width: 1280px;
+    margin: 0 auto;
+    align-items: flex-start;
+  }
+  .sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    background: white;
+    border-right: 1px solid #e3ddd0;
+    min-height: calc(100vh - 108px);
+    position: sticky;
+    top: 0;
+    padding: 22px 0;
+  }
+  .side-group-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #aaa;
+    font-weight: 700;
+    padding: 14px 22px 6px;
+  }
+  .side-link {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-left: 3px solid transparent;
+    padding: 11px 22px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .side-link:hover { background: var(--light); }
+  .side-link.active { background: var(--light); border-left-color: var(--cyan); color: var(--navy); font-weight: 700; }
+  .side-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px; height: 20px;
+    background: var(--navy);
+    color: white;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+  .side-link.active .side-num { background: var(--cyan); }
+  .side-dur { margin-left: auto; font-size: 11px; color: #999; }
+
+  .content {
+    flex: 1;
+    padding: 32px 40px 80px;
+    min-width: 0;
+  }
+  .page-title { color: var(--navy); font-size: 26px; margin: 8px 0 20px; }
+  .module-badge {
+    display: inline-block;
+    background: var(--light);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+  }
+  .side-h {
+    color: var(--cyan);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 26px 0 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 6px;
+  }
+  ul.lesson-list, ol.lesson-list { margin: 0; padding-left: 20px; font-size: 14.5px; line-height: 1.7; color: #333; }
+  ul.lesson-list li { margin-bottom: 6px; }
+  .lesson-body { font-size: 15px; line-height: 1.75; color: #2a2a2a; }
+  .lesson-body h4 { color: var(--navy); font-size: 16px; margin: 22px 0 8px; }
+  .lesson-body p { margin: 0 0 14px; }
+  .code-block {
+    background: #1B2A4A;
+    color: #d9e6f2;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.55;
+    overflow-x: auto;
+    margin: 10px 0 18px;
+    font-family: 'Consolas', 'Courier New', monospace;
+  }
+  .lesson-body code, ul.lesson-list code {
+    background: #eef2f6;
+    color: #1B2A4A;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'Consolas', 'Courier New', monospace;
+  }
+  table.ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 18px;
+    font-size: 13.5px;
+  }
+  table.ref-table th { background: var(--navy); color: white; text-align: left; padding: 8px 10px; }
+  table.ref-table td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+  table.ref-table td code { background: #eef2f6; padding: 1px 5px; border-radius: 4px; }
+  .term-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .term-chip { background: var(--light); color: var(--navy); font-size: 12.5px; font-weight: 600; padding: 5px 12px; border-radius: 14px; }
+  .exercise-box { background: white; border: 1px solid #e3ddd0; border-left: 3px solid var(--cyan); border-radius: 6px; padding: 14px 16px; font-size: 14px; line-height: 1.6; color: #333; }
+  .demo-list { margin: 0; padding-left: 18px; font-size: 13.5px; }
+  .demo-list a { color: var(--navy); font-weight: 600; text-decoration: none; font-family: 'Consolas', monospace; font-size: 13px; }
+  .demo-list a:hover { color: var(--cyan); text-decoration: underline; }
+
+  .downloads { display: flex; gap: 16px; flex-wrap: wrap; }
+  .download-card { flex: 1 1 220px; background: white; border: 1px solid #e3ddd0; border-radius: 10px; padding: 20px; text-align: center; }
+  .download-card h4 { margin: 6px 0; color: var(--navy); }
+  .download-card a.btn { display: inline-block; margin-top: 10px; background: var(--cyan); color: white; text-decoration: none; padding: 8px 18px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+  .download-card a.btn:hover { background: var(--navy); }
+  .overview-box { background: white; border-left: 4px solid var(--cyan); border-radius: 6px; padding: 20px 24px; font-size: 15px; line-height: 1.6; color: #333; margin-bottom: 26px; }
+
+  .cat-block { margin-bottom: 30px; }
+  .cat-block h3 { color: var(--navy); font-size: 18px; margin-bottom: 10px; }
+  table.script-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+  table.script-table th { background: var(--navy); color: white; text-align: left; font-size: 12px; padding: 10px 12px; }
+  table.script-table td { padding: 10px 12px; font-size: 13.5px; border-bottom: 1px solid #f0ece2; vertical-align: top; }
+  table.script-table td.num { width: 30px; color: #999; }
+  table.script-table td.scriptname a { color: var(--navy); font-weight: 600; text-decoration: none; font-family: 'Consolas', monospace; font-size: 13px; }
+  table.script-table td.scriptname a:hover { color: var(--cyan); text-decoration: underline; }
+  .pill { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 10px; white-space: nowrap; }
+
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; position: relative; min-height: auto; border-right: none; border-bottom: 1px solid #e3ddd0; }
+    .content { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Kudrant Academy</div>
+  <h1>DBA Scripting Mastery</h1>
+  <p class="sub">Click a module on the left to open its lesson</p>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="side-group-label">Start Here</div>
+    <button class="side-link" data-page="overview"><span class="side-num">•</span>Overview &amp; Materials</button>
+
+    <div class="side-group-label">Course Modules</div>
+    <button class="side-link" data-page="module1"><span class="side-num">1</span>Foundations of DBA Scripting<span class="side-dur">75 min</span></button><button class="side-link" data-page="module2"><span class="side-num">2</span>Building Simple Scripts<span class="side-dur">90 min</span></button><button class="side-link" data-page="module3"><span class="side-num">3</span>Building Complex Scripts (PL/SQL Reports)<span class="side-dur">90 min</span></button><button class="side-link" data-page="module4"><span class="side-num">4</span>Managing & Maintaining a Script Library<span class="side-dur">60 min</span></button><button class="side-link" data-page="module5"><span class="side-num">5</span>Execution & Operations<span class="side-dur">75 min</span></button>
+
+    <div class="side-group-label">Reference</div>
+    <button class="side-link" data-page="library"><span class="side-num">•</span>50-Script Library</button>
+  </div>
+
+  <div class="content">
+
+    <div class="page" id="page-overview">
+      <h2 class="page-title">Course Overview</h2>
+      <div class="overview-box">
+        A 5-module course that teaches a new Oracle DBA how to write, read, manage, and safely execute the
+        scripts that make up day-to-day DBA work — from a five-line lookup query to a full formatted PL/SQL
+        report. Built around a real scenario: a student was asked to pull primary key, foreign key, and
+        constraint information from a schema and give a readable report. You'll leave with your own working
+        50+ script personal library. Use the menu on the left to open each module's lesson.
+      </div>
+
+      <h4 class="side-h">Course Materials</h4>
+      <div class="downloads">
+        <div class="download-card">
+          <h4>Student Workbook</h4>
+          <p style="font-size:13px;color:#666;">Guided notes, key terms, exercises, and a running personal script-library index.</p>
+          <a class="btn" href="Student_Workbook.docx" download>Download .docx</a>
+        </div>
+        <div class="download-card">
+          <h4>Assignment Packet</h4>
+          <p style="font-size:13px;color:#666;">4-part graded capstone assignment with rubric and submission checklist.</p>
+          <a class="btn" href="Assignment_Packet.pdf" download>Download .pdf</a>
+        </div>
+        <div class="download-card">
+          <h4>Script Catalog</h4>
+          <p style="font-size:13px;color:#666;">Full index of all 50 scripts with category, level, and purpose.</p>
+          <a class="btn" href="script_catalog.md" download>Download .md</a>
+        </div>
+      </div>
+    </div>
+
+    
+  <div class="page" id="page-module1" style="display:none;">
+    <div class="module-badge">Module 1 &middot; 75 min</div>
+    <h2 class="page-title">Foundations of DBA Scripting</h2>
+
+    <h4 class="side-h">Learning Objectives</h4>
+    <ul class="lesson-list"><li>Explain what a &ldquo;DBA script&rdquo; is and why almost all DBA work is script-driven.</li><li>Navigate the Oracle data dictionary (ALL_/DBA_/USER_ views, V$ views).</li><li>Understand SQL*Plus vs. SQLcl and when to use each.</li><li>Apply basic script safety practices before running anything against production.</li></ul>
+
+    <h4 class="side-h">Lesson</h4>
+    <div class="lesson-body">
+      
+<p>A &ldquo;DBA script&rdquo; is just a saved, reusable question you ask the database &mdash; written once, run
+many times, sometimes with a parameter swapped in. Almost everything a DBA does day-to-day, from checking
+tablespace space to building a full constraints report, is a script someone wrote once and kept. This module
+starts from the real scenario that motivates this whole course: your manager asks you to pull every primary
+key, foreign key, and constraint for a schema, and hand back something readable. With only basic SELECT
+knowledge, that request is genuinely hard to know where to start &mdash; this module gives you the map.</p>
+
+<h4>The data dictionary: three families of views</h4>
+<p>Oracle keeps metadata about every object &mdash; tables, columns, constraints, indexes &mdash; in its data
+dictionary. You will mostly work with three families of views, which differ only in <i>whose</i> objects
+they show you:</p>
+<table class="ref-table">
+<tr><th>View prefix</th><th>Shows you</th><th>Needs</th></tr>
+<tr><td><code>USER_*</code></td><td>Objects you own</td><td>Nothing extra &mdash; always available</td></tr>
+<tr><td><code>ALL_*</code></td><td>Objects you own <i>or</i> have been granted privileges on</td><td>A grant on the object</td></tr>
+<tr><td><code>DBA_*</code></td><td>Every object in the database, regardless of owner</td><td>DBA-level privilege (e.g. SELECT_CATALOG_ROLE)</td></tr>
+</table>
+<p>A common beginner mistake is querying <code>USER_TABLES</code> and being confused when another schema&rsquo;s
+tables don&rsquo;t show up &mdash; that view only ever shows the connected user&rsquo;s own objects. If you&rsquo;re
+building a script to inspect a schema you don&rsquo;t own, you need <code>ALL_*</code> or <code>DBA_*</code>.</p>
+
+<h4>The four-view join path</h4>
+<p>Constraint reporting always follows the same connected path through the dictionary. Memorize this shape &mdash;
+you will reuse it constantly:</p>
+<pre class="code-block"><code>ALL_TABLES
+   → ALL_TAB_COLUMNS      (every column of every table)
+   → ALL_CONSTRAINTS      (every constraint: P=primary key, R=foreign key, U=unique, C=check)
+   → ALL_CONS_COLUMNS     (which column(s) belong to each constraint)</code></pre>
+<p>Foreign keys need one extra step: <code>ALL_CONSTRAINTS</code> is joined <i>to itself</i>, matching a row&rsquo;s
+<code>R_CONSTRAINT_NAME</code> to the primary/unique constraint it references, in order to resolve which table
+and column a foreign key actually points to. You&rsquo;ll build this self-join by hand in Module 3.</p>
+
+<h4>SQL*Plus vs. SQLcl</h4>
+<p>SQL*Plus is the original, universally-available command-line client &mdash; every Oracle install has it, and
+almost every legacy DBA script in the wild is written for it. SQLcl (SQL Developer Command Line) is Oracle&rsquo;s
+newer client: it understands the same <code>SET</code>/<code>ACCEPT</code>/<code>SPOOL</code> commands, adds
+things like built-in JSON and liquibase support, command history, and better tab completion. For this course,
+scripts are written to run in either &mdash; but when you see a script that behaves oddly in one client and not
+the other, that&rsquo;s usually the first thing to suspect.</p>
+
+<h4>Formatting isn&rsquo;t cosmetic</h4>
+<p>Before you run almost any script, these <code>SET</code> commands change whether the output is usable at all:</p>
+<pre class="code-block"><code>SET LINESIZE 200      -- characters per line before wrapping
+SET PAGESIZE 50000    -- rows before repeating column headers
+SET FEEDBACK OFF      -- suppress &quot;N rows selected&quot;
+SET HEADING ON        -- keep column headers (or OFF for clean CSV)</code></pre>
+<p>Skip <code>LINESIZE</code>/<code>PAGESIZE</code> and a perfectly correct query can look wrapped and broken &mdash;
+new DBAs often assume the <i>query</i> is wrong when it&rsquo;s actually just the formatting.</p>
+
+<h4>Script safety, before you run anything</h4>
+<ul class="lesson-list">
+<li>Know which environment you&rsquo;re connected to &mdash; run <code>SELECT name FROM v$database;</code> or check your prompt.</li>
+<li>Know which schema you&rsquo;re connected as &mdash; <code>SHOW USER</code> or <code>SELECT USER FROM DUAL;</code>.</li>
+<li>Know what a script&rsquo;s <code>SPOOL</code> will overwrite &mdash; check the filename before you run it a second time.</li>
+<li>Never run an unfamiliar script against production first &mdash; read it, then test it in a sandbox.</li>
+</ul>
+
+    </div>
+
+    <h4 class="side-h">Key Terms</h4>
+    <div class="term-chips"><span class="term-chip">Data dictionary</span><span class="term-chip">USER_* view</span><span class="term-chip">ALL_* view</span><span class="term-chip">DBA_* view</span><span class="term-chip">SQL*Plus substitution variable</span></div>
+
+    <h4 class="side-h">Guided Exercise</h4>
+    <div class="exercise-box">Using only ALL_TABLES and ALL_TAB_COLUMNS, hand-write a query that lists every column of one table in your sandbox schema &mdash; before you look at script 02.</div>
+
+    <h4 class="side-h">Scripts Used in This Module</h4>
+    <ul class="demo-list"><li><a href="scripts/01_schema_object_metadata/01_list_tables_in_schema.sql" download>01_list_tables_in_schema.sql</a></li><li><a href="scripts/01_schema_object_metadata/02_describe_table_columns.sql" download>02_describe_table_columns.sql</a></li></ul>
+  </div>
+
+  <div class="page" id="page-module2" style="display:none;">
+    <div class="module-badge">Module 2 &middot; 90 min</div>
+    <h2 class="page-title">Building Simple Scripts</h2>
+
+    <h4 class="side-h">Learning Objectives</h4>
+    <ul class="lesson-list"><li>Write single-purpose, parameterized SELECT scripts using ACCEPT and substitution variables.</li><li>Use NEW_VALUE to generate dynamic filenames for SPOOL output.</li><li>Format output for readability with COLUMN, and export to CSV with SET MARKUP CSV.</li><li>Know the difference between a &ldquo;quick lookup&rdquo; script and a &ldquo;report&rdquo; script.</li></ul>
+
+    <h4 class="side-h">Lesson</h4>
+    <div class="lesson-body">
+      
+<p>Once you can read the dictionary, the next skill is turning a one-off query into a reusable tool: something
+that asks <i>you</i> for input, writes its output to a sensibly-named file, and can be handed to someone else
+to run without editing the script itself.</p>
+
+<h4>ACCEPT and substitution variables</h4>
+<p><code>ACCEPT</code> prompts the person running the script for a value and stores it in a substitution
+variable, referenced with <code>&amp;</code>:</p>
+<pre class="code-block"><code>ACCEPT p_schema CHAR PROMPT &#x27;Enter schema owner: &#x27;
+
+SELECT table_name FROM all_tables
+WHERE owner = UPPER(&#x27;&amp;p_schema&#x27;)
+ORDER BY table_name;</code></pre>
+<p>Two details trip people up constantly. First, dictionary values are stored in uppercase, so always wrap
+substitution variables in <code>UPPER()</code> &mdash; otherwise <code>myschema</code> won&rsquo;t match
+<code>MYSCHEMA</code>. Second, a single <code>&amp;var</code> re-prompts every time it&rsquo;s referenced unless
+you either use <code>ACCEPT</code> first (as above) or double it as <code>&amp;&amp;var</code>, which prompts
+once and reuses the value for the rest of the script.</p>
+
+<h4>Dynamic filenames with NEW_VALUE</h4>
+<p>To generate a spool filename that includes the schema name and a timestamp, without hardcoding it, use a
+throwaway <code>SELECT</code> whose column feeds a substitution variable via <code>NEW_VALUE</code>:</p>
+<pre class="code-block"><code>COLUMN output_file NEW_VALUE output_file NOPRINT
+SELECT &#x27;report_&#x27; || LOWER(&#x27;&amp;p_schema&#x27;) || &#x27;_&#x27; ||
+       TO_CHAR(SYSDATE,&#x27;YYYYMMDD_HH24MISS&#x27;) || &#x27;.csv&#x27; AS output_file
+FROM dual;
+
+SPOOL &amp;output_file
+... your report query ...
+SPOOL OFF</code></pre>
+<p>This pattern &mdash; a dummy query that only exists to compute a filename &mdash; shows up in nearly every
+report-style script in the library. <code>NOPRINT</code> keeps the dummy query itself from appearing in the
+output.</p>
+
+<h4>Clean CSV export</h4>
+<p>To spool a genuinely clean CSV (one that opens correctly in Excel with no stray SQL*Plus text), you need
+all of the following together:</p>
+<pre class="code-block"><code>SET FEEDBACK OFF
+SET VERIFY OFF
+SET TRIMSPOOL ON
+SET MARKUP CSV ON QUOTE ON
+SPOOL output.csv
+SELECT ... FROM ...;
+SPOOL OFF
+SET MARKUP CSV OFF</code></pre>
+<p>Forgetting <code>FEEDBACK OFF</code> or <code>VERIFY OFF</code> leaves system lines like
+<code>old 3: WHERE owner = '&amp;p_schema'</code> written directly into your CSV, which then breaks any
+downstream import. <code>export_schema_column_metadata_csv.sql</code> (this course&rsquo;s anchor script for
+this module) builds on this exact pattern, adding <code>WITH</code> clauses that flag which columns are part
+of a primary key or foreign key before the CSV is even generated.</p>
+
+<h4>Ad hoc query, or library script?</h4>
+<p>A simple rule of thumb: if you&rsquo;ll plausibly be asked this question again &mdash; by this client, this
+manager, or your future self &mdash; save it into your library with a proper header comment. If it&rsquo;s a
+truly one-time lookup, it&rsquo;s fine to leave it as scratch work.</p>
+
+    </div>
+
+    <h4 class="side-h">Key Terms</h4>
+    <div class="term-chips"><span class="term-chip">ACCEPT / PROMPT</span><span class="term-chip">Substitution variable (& vs &&)</span><span class="term-chip">SPOOL</span><span class="term-chip">NEW_VALUE</span><span class="term-chip">SET MARKUP CSV</span></div>
+
+    <h4 class="side-h">Guided Exercise</h4>
+    <div class="exercise-box">Parameterize 05_index_inventory.sql so it also prompts for a specific table name (not just a schema), and spool the result to a uniquely named CSV file.</div>
+
+    <h4 class="side-h">Scripts Used in This Module</h4>
+    <ul class="demo-list"><li><a href="scripts/02_space_storage/08_tablespace_usage_summary.sql" download>08_tablespace_usage_summary.sql</a></li><li><a href="scripts/04_sessions_locking/22_active_session_list.sql" download>22_active_session_list.sql</a></li><li><a href="scripts/01_schema_object_metadata/03_export_schema_column_metadata_csv_FULL.sql" download>03_export_schema_column_metadata_csv_FULL.sql</a></li></ul>
+  </div>
+
+  <div class="page" id="page-module3" style="display:none;">
+    <div class="module-badge">Module 3 &middot; 90 min</div>
+    <h2 class="page-title">Building Complex Scripts (PL/SQL Reports)</h2>
+
+    <h4 class="side-h">Learning Objectives</h4>
+    <ul class="lesson-list"><li>Understand when a flat SELECT isn&rsquo;t enough and a PL/SQL block is needed.</li><li>Use anonymous PL/SQL blocks with DBMS_OUTPUT to build narrative, human-readable reports.</li><li>Write and call local functions/procedures inside a DECLARE block.</li><li>Recognize and fix the LONG-column pitfall (ORA-00932) when working with SEARCH_CONDITION.</li></ul>
+
+    <h4 class="side-h">Lesson</h4>
+    <div class="lesson-body">
+      
+<p>A flat <code>SELECT</code> can list constraints, but it can&rsquo;t group them table-by-table with headers,
+skip cleanly to the next section when a table has no foreign keys, or build in a plain-English &ldquo;references
+table X, column Y&rdquo; line. That&rsquo;s a job for a PL/SQL block: real code that loops, branches, and
+prints a narrative report instead of a flat result grid.</p>
+
+<h4>Anonymous PL/SQL blocks and DBMS_OUTPUT</h4>
+<p>An anonymous block has no name and isn&rsquo;t stored in the database &mdash; it runs once and is gone.
+The skeleton looks like this:</p>
+<pre class="code-block"><code>SET SERVEROUTPUT ON SIZE UNLIMITED   -- required, or DBMS_OUTPUT is silently swallowed
+
+DECLARE
+  v_count PLS_INTEGER;
+BEGIN
+  SELECT COUNT(*) INTO v_count FROM all_tables WHERE owner = &#x27;HR&#x27;;
+  DBMS_OUTPUT.PUT_LINE(&#x27;Table count: &#x27; || v_count);
+END;
+/                                      -- the trailing slash executes the block</code></pre>
+<p>Two mistakes account for most first-time failures here: forgetting <code>SET SERVEROUTPUT ON</code> (the
+block runs fine, but you never see any output), and forgetting the trailing <code>/</code> (SQL*Plus just
+sits there, still building the block).</p>
+
+<h4>Local functions inside a block</h4>
+<p><code>schema_constraints_report.sql</code>, this module&rsquo;s anchor script, declares a small local
+function, <code>get_cols</code>, that takes an owner and constraint name and returns a comma-joined list of
+that constraint&rsquo;s columns:</p>
+<pre class="code-block"><code>FUNCTION get_cols(p_owner VARCHAR2, p_cons_name VARCHAR2) RETURN VARCHAR2 IS
+  v_cols VARCHAR2(4000);
+BEGIN
+  FOR c IN (SELECT column_name FROM all_cons_columns
+            WHERE owner = p_owner AND constraint_name = p_cons_name
+            ORDER BY position) LOOP
+    v_cols := v_cols || c.column_name || &#x27;, &#x27;;
+  END LOOP;
+  RETURN RTRIM(v_cols, &#x27;, &#x27;);
+END get_cols;</code></pre>
+<p>It&rsquo;s then called once per constraint inside the main report loop, keeping the reporting logic
+readable instead of repeating the same cursor everywhere a column list is needed.</p>
+
+<h4>Resolving a foreign key&rsquo;s target: the self-join</h4>
+<p>This is the trickiest join in the whole course. A foreign key row in <code>ALL_CONSTRAINTS</code> stores
+<i>which</i> constraint it references &mdash; not the table/column directly. To resolve that into a readable
+&ldquo;references OWNER.TABLE (COLUMN)&rdquo; line, you join <code>ALL_CONSTRAINTS</code> to itself:</p>
+<pre class="code-block"><code>SELECT c.constraint_name, rc.table_name AS referenced_table
+FROM all_constraints c
+JOIN all_constraints rc
+  ON c.r_owner = rc.owner
+ AND c.r_constraint_name = rc.constraint_name
+WHERE c.owner = &#x27;HR&#x27;
+  AND c.constraint_type = &#x27;R&#x27;;</code></pre>
+<p><code>c</code> is the foreign key itself; <code>rc</code> is the primary/unique constraint it points back
+to. Once you have <code>rc.table_name</code>, you feed it back into <code>get_cols</code> to print the
+referenced column(s) too.</p>
+
+<h4>Case study: the LONG-column bug</h4>
+<p>Constraint conditions (<code>SEARCH_CONDITION</code> in <code>ALL_CONSTRAINTS</code>) are stored as a
+<code>LONG</code> datatype. Oracle only allows a narrow set of operations directly on a <code>LONG</code>
+column in SQL &mdash; and <code>LIKE</code> is not one of them. This script originally tried to filter for
+NOT NULL checks like this, and it failed:</p>
+<pre class="code-block"><code>-- FAILS: ORA-00932: inconsistent datatypes: expected CHAR got LONG
+SELECT column_name FROM all_constraints c JOIN all_cons_columns cc ...
+WHERE c.search_condition LIKE &#x27;%IS NOT NULL%&#x27;</code></pre>
+<p>The fix: pull the value out with <code>SUBSTR</code> (which Oracle <i>does</i> allow on a LONG, converting
+it to a bounded VARCHAR2) into a PL/SQL variable, then run the <code>LIKE</code> comparison in PL/SQL instead
+of in the SQL <code>WHERE</code> clause:</p>
+<pre class="code-block"><code>FOR nn IN (
+  SELECT cc.column_name, SUBSTR(c.search_condition,1,4000) AS scond
+  FROM all_constraints c JOIN all_cons_columns cc ON ...
+) LOOP
+  IF nn.scond IS NOT NULL AND UPPER(nn.scond) LIKE &#x27;%IS NOT NULL%&#x27; THEN
+    v_cols := v_cols || nn.column_name || &#x27;, &#x27;;
+  END IF;
+END LOOP;</code></pre>
+<p>This is one of the most common real-world bugs you&rsquo;ll hit querying the dictionary, and now you&rsquo;ve
+already fixed it once.</p>
+
+    </div>
+
+    <h4 class="side-h">Key Terms</h4>
+    <div class="term-chips"><span class="term-chip">Anonymous PL/SQL block</span><span class="term-chip">DBMS_OUTPUT.PUT_LINE</span><span class="term-chip">SERVEROUTPUT</span><span class="term-chip">LONG data type</span><span class="term-chip">Self-join (constraint to r_constraint_name)</span></div>
+
+    <h4 class="side-h">Guided Exercise</h4>
+    <div class="exercise-box">Using schema_constraints_report.sql as your template, add a new section that prints a count of columns per table under each table&rsquo;s header.</div>
+
+    <h4 class="side-h">Scripts Used in This Module</h4>
+    <ul class="demo-list"><li><a href="scripts/01_schema_object_metadata/04_schema_constraints_report_FULL.sql" download>04_schema_constraints_report_FULL.sql</a></li><li><a href="scripts/07_patching_upgrade_health/42_post_upgrade_invalid_objects.sql" download>42_post_upgrade_invalid_objects.sql</a></li></ul>
+  </div>
+
+  <div class="page" id="page-module4" style="display:none;">
+    <div class="module-badge">Module 4 &middot; 60 min</div>
+    <h2 class="page-title">Managing & Maintaining a Script Library</h2>
+
+    <h4 class="side-h">Learning Objectives</h4>
+    <ul class="lesson-list"><li>Organize scripts into a personal library with consistent naming, headers, and categories.</li><li>Apply basic version-control discipline (even without Git) to avoid overwriting working scripts.</li><li>Document scripts so another DBA (or future you) can run them without guessing.</li><li>Know when to retire, merge, or rewrite an old script.</li></ul>
+
+    <h4 class="side-h">Lesson</h4>
+    <div class="lesson-body">
+      
+<p>A script you can&rsquo;t find, don&rsquo;t trust, or don&rsquo;t understand six months later isn&rsquo;t
+really an asset. This module is about the unglamorous habits that make a 50-script library (or a 500-script
+one) something you can actually rely on.</p>
+
+<h4>The header comment convention</h4>
+<p>Every script in this course&rsquo;s library opens with the same shape of header, so it&rsquo;s
+self-documenting the moment you open the file &mdash; no need to run it just to find out what it does:</p>
+<pre class="code-block"><code>-- =====================================================================
+-- 08. Tablespace Usage Summary
+-- Category : Space &amp; Storage Management
+-- Purpose  : Show percent used, free, and allocated space per tablespace.
+-- Level    : Beginner
+-- Usage    : sqlplus user/pass@db @08_tablespace_usage_summary.sql
+-- =====================================================================</code></pre>
+<p>Four things, every time: what it&rsquo;s called, what category it belongs to, what it actually does, and
+how to run it.</p>
+
+<h4>Organize by category, not one flat folder</h4>
+<p>At 10 scripts, a flat folder is fine. At 50, you need categories &mdash; this library uses eight: schema/object
+metadata, space &amp; storage, performance, sessions &amp; locking, users/roles/security, backup/recovery/Data
+Guard, patching/upgrade/health, and scheduling. At 500 scripts, you may need sub-categories within those. The
+test is simple: can you find the right script in under a minute without searching by filename alone?</p>
+
+<h4>Version discipline, even without Git</h4>
+<p>The single most common real-world DBA mistake in this area is editing a script that&rsquo;s mid-use
+somewhere else &mdash; a scheduled job, a colleague&rsquo;s open session, a runbook step. The minimum viable
+habit: copy before you edit, and date-stamp the old version (<code>report_v1_2026-08-06.sql</code>) rather
+than overwriting it. If your team has Git available, a script library is one of the easiest possible places
+to start using it &mdash; <code>git init</code>, <code>git add .</code>, <code>git commit -m "baseline"</code>,
+then commit again every time you meaningfully change a script.</p>
+
+<h4>Keep an index</h4>
+<p>This course ships with <code>script_catalog.md</code> as a model: one row per script, with its path,
+level, and purpose, grouped by category. As your own library grows past the 50 scripts here, keep adding to
+your own version of this file &mdash; it becomes the fastest way to find something without opening files one
+by one.</p>
+
+    </div>
+
+    <h4 class="side-h">Key Terms</h4>
+    <div class="term-chips"><span class="term-chip">Header comment convention</span><span class="term-chip">Script catalog / index</span><span class="term-chip">Version discipline</span><span class="term-chip">Deprecation</span></div>
+
+    <h4 class="side-h">Guided Exercise</h4>
+    <div class="exercise-box">Pick 5 scripts from the library. Write a one-line catalog entry for each (script name, purpose, level) as if you were building your own personal index.</div>
+
+    <h4 class="side-h">Scripts Used in This Module</h4>
+    <ul class="demo-list"><li><a href="scripts/01_schema_object_metadata/07_invalid_objects_report.sql" download>07_invalid_objects_report.sql</a></li></ul>
+  </div>
+
+  <div class="page" id="page-module5" style="display:none;">
+    <div class="module-badge">Module 5 &middot; 75 min</div>
+    <h2 class="page-title">Execution & Operations</h2>
+
+    <h4 class="side-h">Learning Objectives</h4>
+    <ul class="lesson-list"><li>Safely execute scripts in non-production and production environments.</li><li>Read and act on script errors (ORA- codes) rather than guessing.</li><li>Schedule recurring scripts with DBMS_SCHEDULER.</li><li>Assemble multiple scripts into a single operational &ldquo;health check&rdquo; routine.</li></ul>
+
+    <h4 class="side-h">Lesson</h4>
+    <div class="lesson-body">
+      
+<p>Everything up to this point has been building and organizing scripts. This module is about running them
+safely, reading what goes wrong when they don&rsquo;t work, and combining several into a single deliverable
+&mdash; which is exactly how the motivating scenario for this course actually gets resolved.</p>
+
+<h4>The pre-execution checklist</h4>
+<ul class="lesson-list">
+<li><b>Know the environment.</b> <code>SELECT name FROM v$database;</code> &mdash; confirm you&rsquo;re where you think you are.</li>
+<li><b>Know the connected user.</b> <code>SHOW USER</code> &mdash; especially important with shared/service accounts.</li>
+<li><b>Know what the script changes.</b> A <code>SELECT</code>-only script is low-risk; anything with <code>SPOOL</code>, DDL, or DML needs a second look.</li>
+<li><b>Have a rollback plan</b> for anything beyond a read-only report.</li>
+</ul>
+
+<h4>Reading an error stack</h4>
+<p>Oracle error stacks read <b>bottom-up</b>, not top-down &mdash; the deepest/most specific error is at the
+bottom, and each line above it is the calling context. Take the exact error from Module 3:</p>
+<pre class="code-block"><code>ORA-06550: line 193, column 17:
+PL/SQL: ORA-00932: inconsistent datatypes: expected CHAR got LONG
+ORA-06550: line 183, column 11:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 196, column 31:
+PLS-00364: loop index variable &#x27;NN&#x27; use is invalid</code></pre>
+<p>Read from the top down and it looks like three unrelated problems. Read the <i>root cause</i> first
+(<code>ORA-00932</code>, the LONG/CHAR mismatch) and the rest makes sense: the SQL statement got rejected, so
+the loop it was feeding never ran, so the loop variable was never valid. Fix the root cause and the rest
+resolves itself.</p>
+
+<h4>Scheduling with DBMS_SCHEDULER</h4>
+<p>Once a report script works, you can wrap it to run unattended:</p>
+<pre class="code-block"><code>BEGIN
+  DBMS_SCHEDULER.CREATE_JOB(
+    job_name        =&gt; &#x27;NIGHTLY_CONSTRAINTS_REPORT&#x27;,
+    job_type        =&gt; &#x27;EXECUTABLE&#x27;,
+    job_action      =&gt; &#x27;/usr/bin/sqlplus&#x27;,
+    number_of_arguments =&gt; 1,
+    enabled         =&gt; FALSE
+  );
+  DBMS_SCHEDULER.SET_JOB_ARGUMENT_VALUE(&#x27;NIGHTLY_CONSTRAINTS_REPORT&#x27;, 1,
+    &#x27;dba/pw@db @schema_constraints_report.sql&#x27;);
+  DBMS_SCHEDULER.SET_ATTRIBUTE(&#x27;NIGHTLY_CONSTRAINTS_REPORT&#x27;,&#x27;repeat_interval&#x27;,
+    &#x27;FREQ=DAILY;BYHOUR=2&#x27;);
+  DBMS_SCHEDULER.ENABLE(&#x27;NIGHTLY_CONSTRAINTS_REPORT&#x27;);
+END;
+/</code></pre>
+<p>Always create a scheduler job disabled first, verify its arguments and schedule, and only enable it once
+you&rsquo;ve confirmed it&rsquo;s correct &mdash; and always know how to <code>DISABLE</code> it again quickly
+if it misbehaves.</p>
+
+<h4>Closing the loop: the schema health packet</h4>
+<p>This is the actual answer to the scenario that opened this course. Combine three scripts into one
+deliverable: run the constraints report, the column metadata CSV export, and the invalid objects report in
+sequence, and you have a complete, readable &ldquo;here&rsquo;s the shape of this schema&rdquo; packet you
+could hand to a manager or client on day one of any engagement &mdash; exactly what the original request was
+asking for.</p>
+
+    </div>
+
+    <h4 class="side-h">Key Terms</h4>
+    <div class="term-chips"><span class="term-chip">Pre-execution checklist</span><span class="term-chip">ORA- error code</span><span class="term-chip">DBMS_SCHEDULER job</span><span class="term-chip">Health check packet</span></div>
+
+    <h4 class="side-h">Guided Exercise</h4>
+    <div class="exercise-box">Capstone: build a short driver script (or shell/batch wrapper) that runs 3 scripts of your choice in sequence against the sandbox and confirms all three spool files were created.</div>
+
+    <h4 class="side-h">Scripts Used in This Module</h4>
+    <ul class="demo-list"><li><a href="scripts/08_scheduling_jobs/46_scheduler_job_inventory.sql" download>46_scheduler_job_inventory.sql</a></li><li><a href="scripts/08_scheduling_jobs/47_scheduler_job_run_history.sql" download>47_scheduler_job_run_history.sql</a></li><li><a href="scripts/07_patching_upgrade_health/40_database_component_versions.sql" download>40_database_component_versions.sql</a></li></ul>
+  </div>
+
+    <div class="page" id="page-library" style="display:none;">
+      <h2 class="page-title">Script Library — 50 Scripts</h2>
+      <p style="color:#666;font-size:14px;">Organized into 8 DBA task categories. Click any script name to
+      download it individually. The two full anchor scripts used throughout the course are marked
+      <b>FULL</b> in the Schema &amp; Object Metadata category.</p>
+      
+    <div class="cat-block">
+      <h3>Schema & Object Metadata</h3>
+      <table class="script-table">
+        <thead><tr><th>#</th><th>Script</th><th>Level</th><th>Purpose</th></tr></thead>
+        <tbody>
+        
+        <tr>
+          <td class="num">1</td>
+          <td class="scriptname"><a href="scripts/01_schema_object_metadata/01_list_tables_in_schema.sql" download>01_list_tables_in_schema.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Quick inventory of tables, row estimates, and tablespace for a schema.</td>
+        </tr>
+
+        <tr>
+          <td class="num">2</td>
+          <td class="scriptname"><a href="scripts/01_schema_object_metadata/02_describe_table_columns.sql" download>02_describe_table_columns.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Show every column, data type, length, and nullability for one table.</td>
+        </tr>
+
+        <tr>
+          <td class="num">3</td>
+          <td class="scriptname"><a href="scripts/01_schema_object_metadata/03_export_schema_column_metadata_csv.sql" download>03_export_schema_column_metadata_csv.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Export every table/column in a schema to CSV, flagging PK/FK columns. (Student-provided script - see course materials.)</td>
+        </tr>
+
+        <tr>
+          <td class="num">4</td>
+          <td class="scriptname"><a href="scripts/01_schema_object_metadata/04_schema_constraints_report.sql" download>04_schema_constraints_report.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Full readable report of every constraint on every table in a schema. (Capstone script - see course materials.)</td>
+        </tr>
+
+        <tr>
+          <td class="num">5</td>
+          <td class="scriptname"><a href="scripts/01_schema_object_metadata/05_index_inventory.sql" download>05_index_inventory.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">List all indexes, their type, uniqueness, and indexed columns.</td>
+        </tr>
+
+        <tr>
+          <td class="num">6</td>
+          <td class="scriptname"><a href="scripts/01_schema_object_metadata/06_list_views_with_source.sql" download>06_list_views_with_source.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">List all views owned by a schema along with a preview of the view SQL.</td>
+        </tr>
+
+        <tr>
+          <td class="num">7</td>
+          <td class="scriptname"><a href="scripts/01_schema_object_metadata/07_invalid_objects_report.sql" download>07_invalid_objects_report.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Find every invalid object in a schema (or the whole database) - critical after patching or DDL changes.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cat-block">
+      <h3>Space & Storage Management</h3>
+      <table class="script-table">
+        <thead><tr><th>#</th><th>Script</th><th>Level</th><th>Purpose</th></tr></thead>
+        <tbody>
+        
+        <tr>
+          <td class="num">8</td>
+          <td class="scriptname"><a href="scripts/02_space_storage/08_tablespace_usage_summary.sql" download>08_tablespace_usage_summary.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Show percent used, free, and allocated space per tablespace.</td>
+        </tr>
+
+        <tr>
+          <td class="num">9</td>
+          <td class="scriptname"><a href="scripts/02_space_storage/09_datafile_inventory.sql" download>09_datafile_inventory.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">List every datafile, its size, autoextend setting, and max size.</td>
+        </tr>
+
+        <tr>
+          <td class="num">10</td>
+          <td class="scriptname"><a href="scripts/02_space_storage/10_top_largest_segments.sql" download>10_top_largest_segments.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Identify the biggest space consumers in a schema - useful before archiving or purging.</td>
+        </tr>
+
+        <tr>
+          <td class="num">11</td>
+          <td class="scriptname"><a href="scripts/02_space_storage/11_stale_or_missing_stats.sql" download>11_stale_or_missing_stats.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Find tables that have never been analyzed or are stale - a common cause of bad optimizer plans.</td>
+        </tr>
+
+        <tr>
+          <td class="num">12</td>
+          <td class="scriptname"><a href="scripts/02_space_storage/12_segment_space_advisor_style.sql" download>12_segment_space_advisor_style.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Find candidates for a SHRINK SPACE or reorg based on allocated vs. actual used blocks.</td>
+        </tr>
+
+        <tr>
+          <td class="num">13</td>
+          <td class="scriptname"><a href="scripts/02_space_storage/13_temp_tablespace_usage.sql" download>13_temp_tablespace_usage.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Monitor TEMP tablespace consumption - key when large sorts/joins spike usage.</td>
+        </tr>
+
+        <tr>
+          <td class="num">14</td>
+          <td class="scriptname"><a href="scripts/02_space_storage/14_undo_usage_retention.sql" download>14_undo_usage_retention.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Check undo usage and retention settings - relevant for long-running reports and flashback.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cat-block">
+      <h3>Performance & SQL Tuning</h3>
+      <table class="script-table">
+        <thead><tr><th>#</th><th>Script</th><th>Level</th><th>Purpose</th></tr></thead>
+        <tbody>
+        
+        <tr>
+          <td class="num">15</td>
+          <td class="scriptname"><a href="scripts/03_performance_tuning/15_top_sql_by_elapsed.sql" download>15_top_sql_by_elapsed.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Find the most expensive SQL currently in the shared pool - a first stop for tuning.</td>
+        </tr>
+
+        <tr>
+          <td class="num">16</td>
+          <td class="scriptname"><a href="scripts/03_performance_tuning/16_top_sql_by_buffer_gets.sql" download>16_top_sql_by_buffer_gets.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Find SQL causing the most logical I/O - often the biggest CPU cost driver.</td>
+        </tr>
+
+        <tr>
+          <td class="num">17</td>
+          <td class="scriptname"><a href="scripts/03_performance_tuning/17_explain_plan_for_sql_id.sql" download>17_explain_plan_for_sql_id.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Pull the last known execution plan for a SQL statement from the shared pool.</td>
+        </tr>
+
+        <tr>
+          <td class="num">18</td>
+          <td class="scriptname"><a href="scripts/03_performance_tuning/18_current_wait_events.sql" download>18_current_wait_events.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">See what the database is waiting on right now - the fastest way to spot a bottleneck.</td>
+        </tr>
+
+        <tr>
+          <td class="num">19</td>
+          <td class="scriptname"><a href="scripts/03_performance_tuning/19_buffer_cache_hit_ratio.sql" download>19_buffer_cache_hit_ratio.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Classic health metric - low ratio can indicate undersized SGA or inefficient SQL.</td>
+        </tr>
+
+        <tr>
+          <td class="num">20</td>
+          <td class="scriptname"><a href="scripts/03_performance_tuning/20_awr_top_sql_window.sql" download>20_awr_top_sql_window.sql</a></td>
+          <td><span class="pill" style="background:#C0392B22;color:#C0392B;">Advanced</span></td>
+          <td class="purpose">Query AWR (requires Diagnostic Pack license) for top SQL over a historical window - use for post-incident analysis.</td>
+        </tr>
+
+        <tr>
+          <td class="num">21</td>
+          <td class="scriptname"><a href="scripts/03_performance_tuning/21_long_running_operations.sql" download>21_long_running_operations.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Monitor progress of long-running RMAN, Data Pump, and index-build style operations.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cat-block">
+      <h3>Sessions & Locking</h3>
+      <table class="script-table">
+        <thead><tr><th>#</th><th>Script</th><th>Level</th><th>Purpose</th></tr></thead>
+        <tbody>
+        
+        <tr>
+          <td class="num">22</td>
+          <td class="scriptname"><a href="scripts/04_sessions_locking/22_active_session_list.sql" download>22_active_session_list.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">See every active session, program, machine, and current SQL - the daily 'who's on the box' check.</td>
+        </tr>
+
+        <tr>
+          <td class="num">23</td>
+          <td class="scriptname"><a href="scripts/04_sessions_locking/23_blocking_sessions.sql" download>23_blocking_sessions.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Identify who is blocking whom - the first query to run when users report 'the system is frozen'.</td>
+        </tr>
+
+        <tr>
+          <td class="num">24</td>
+          <td class="scriptname"><a href="scripts/04_sessions_locking/24_generate_kill_session_stmt.sql" download>24_generate_kill_session_stmt.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Generate the exact ALTER SYSTEM KILL SESSION statement for a given SID/SERIAL# - review before running.</td>
+        </tr>
+
+        <tr>
+          <td class="num">25</td>
+          <td class="scriptname"><a href="scripts/04_sessions_locking/25_session_count_by_status.sql" download>25_session_count_by_status.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Quick pulse-check: how many sessions per user, and how many are active vs. inactive.</td>
+        </tr>
+
+        <tr>
+          <td class="num">26</td>
+          <td class="scriptname"><a href="scripts/04_sessions_locking/26_enqueue_lock_waits.sql" download>26_enqueue_lock_waits.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Deeper look at lock waits by lock type - useful when blocking sessions alone isn't enough detail.</td>
+        </tr>
+
+        <tr>
+          <td class="num">27</td>
+          <td class="scriptname"><a href="scripts/04_sessions_locking/27_sessions_by_cpu.sql" download>27_sessions_by_cpu.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Rank current sessions by CPU used - handy when overall server CPU is spiking.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cat-block">
+      <h3>Users, Roles & Security</h3>
+      <table class="script-table">
+        <thead><tr><th>#</th><th>Script</th><th>Level</th><th>Purpose</th></tr></thead>
+        <tbody>
+        
+        <tr>
+          <td class="num">28</td>
+          <td class="scriptname"><a href="scripts/05_users_roles_security/28_user_inventory.sql" download>28_user_inventory.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">List all database accounts, their status, profile, and last password change.</td>
+        </tr>
+
+        <tr>
+          <td class="num">29</td>
+          <td class="scriptname"><a href="scripts/05_users_roles_security/29_passwords_expiring_soon.sql" download>29_passwords_expiring_soon.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Proactively catch accounts about to lock due to password expiry - avoid surprise outages.</td>
+        </tr>
+
+        <tr>
+          <td class="num">30</td>
+          <td class="scriptname"><a href="scripts/05_users_roles_security/30_user_roles_and_privileges.sql" download>30_user_roles_and_privileges.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Full privilege picture for one account - system privileges, roles, and object grants.</td>
+        </tr>
+
+        <tr>
+          <td class="num">31</td>
+          <td class="scriptname"><a href="scripts/05_users_roles_security/31_powerful_role_holders.sql" download>31_powerful_role_holders.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Security audit: list every account holding DBA or other high-privilege roles.</td>
+        </tr>
+
+        <tr>
+          <td class="num">32</td>
+          <td class="scriptname"><a href="scripts/05_users_roles_security/32_failed_login_attempts.sql" download>32_failed_login_attempts.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Review recent failed logon attempts - a basic security hygiene check.</td>
+        </tr>
+
+        <tr>
+          <td class="num">33</td>
+          <td class="scriptname"><a href="scripts/05_users_roles_security/33_profile_settings.sql" download>33_profile_settings.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Review password complexity, lifetime, and resource limits configured per profile.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cat-block">
+      <h3>Backup, Recovery & Data Guard</h3>
+      <table class="script-table">
+        <thead><tr><th>#</th><th>Script</th><th>Level</th><th>Purpose</th></tr></thead>
+        <tbody>
+        
+        <tr>
+          <td class="num">34</td>
+          <td class="scriptname"><a href="scripts/06_backup_recovery_dataguard/34_rman_backup_job_history.sql" download>34_rman_backup_job_history.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Review recent RMAN backup jobs, status, and duration - your daily 'did the backup run?' check.</td>
+        </tr>
+
+        <tr>
+          <td class="num">35</td>
+          <td class="scriptname"><a href="scripts/06_backup_recovery_dataguard/35_archive_log_generation_rate.sql" download>35_archive_log_generation_rate.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Track archive log volume by day - useful for sizing FRA and spotting redo spikes.</td>
+        </tr>
+
+        <tr>
+          <td class="num">36</td>
+          <td class="scriptname"><a href="scripts/06_backup_recovery_dataguard/36_fra_usage.sql" download>36_fra_usage.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Check FRA space usage and reclaimable space - a common cause of ORA-19809/ARC0 stuck errors.</td>
+        </tr>
+
+        <tr>
+          <td class="num">37</td>
+          <td class="scriptname"><a href="scripts/06_backup_recovery_dataguard/37_dataguard_apply_transport_lag.sql" download>37_dataguard_apply_transport_lag.sql</a></td>
+          <td><span class="pill" style="background:#C0392B22;color:#C0392B;">Advanced</span></td>
+          <td class="purpose">Check standby apply/transport lag - core Data Guard health check for RPO monitoring.</td>
+        </tr>
+
+        <tr>
+          <td class="num">38</td>
+          <td class="scriptname"><a href="scripts/06_backup_recovery_dataguard/38_dataguard_config_status.sql" download>38_dataguard_config_status.sql</a></td>
+          <td><span class="pill" style="background:#C0392B22;color:#C0392B;">Advanced</span></td>
+          <td class="purpose">Confirm primary/standby roles, protection mode, and switchover status before a planned switchover.</td>
+        </tr>
+
+        <tr>
+          <td class="num">39</td>
+          <td class="scriptname"><a href="scripts/06_backup_recovery_dataguard/39_flashback_status_retention.sql" download>39_flashback_status_retention.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Confirm flashback is enabled and check the current retention window before risky changes.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cat-block">
+      <h3>Patching, Upgrade & Health Checks</h3>
+      <table class="script-table">
+        <thead><tr><th>#</th><th>Script</th><th>Level</th><th>Purpose</th></tr></thead>
+        <tbody>
+        
+        <tr>
+          <td class="num">40</td>
+          <td class="scriptname"><a href="scripts/07_patching_upgrade_health/40_database_component_versions.sql" download>40_database_component_versions.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Confirm the database version, edition, and status of every registered component before/after patching.</td>
+        </tr>
+
+        <tr>
+          <td class="num">41</td>
+          <td class="scriptname"><a href="scripts/07_patching_upgrade_health/41_applied_patch_inventory.sql" download>41_applied_patch_inventory.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">List patches applied via OPatch as recorded in the dictionary - key evidence for audits and CVE checks.</td>
+        </tr>
+
+        <tr>
+          <td class="num">42</td>
+          <td class="scriptname"><a href="scripts/07_patching_upgrade_health/42_post_upgrade_invalid_objects.sql" download>42_post_upgrade_invalid_objects.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">After patching/upgrade, find and (optionally) recompile all invalid objects in a schema.</td>
+        </tr>
+
+        <tr>
+          <td class="num">43</td>
+          <td class="scriptname"><a href="scripts/07_patching_upgrade_health/43_non_default_init_parameters.sql" download>43_non_default_init_parameters.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Diff current spfile settings against defaults - useful before an upgrade or when troubleshooting 'it worked before'.</td>
+        </tr>
+
+        <tr>
+          <td class="num">44</td>
+          <td class="scriptname"><a href="scripts/07_patching_upgrade_health/44_alert_log_recent_errors.sql" download>44_alert_log_recent_errors.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Scan the alert log for ORA- errors in the last N days using an external table over the diag trace directory.</td>
+        </tr>
+
+        <tr>
+          <td class="num">45</td>
+          <td class="scriptname"><a href="scripts/07_patching_upgrade_health/45_uptime_instance_health.sql" download>45_uptime_instance_health.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">One-glance health check: uptime, open mode, log mode, and instance status.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cat-block">
+      <h3>Scheduling & Job Monitoring</h3>
+      <table class="script-table">
+        <thead><tr><th>#</th><th>Script</th><th>Level</th><th>Purpose</th></tr></thead>
+        <tbody>
+        
+        <tr>
+          <td class="num">46</td>
+          <td class="scriptname"><a href="scripts/08_scheduling_jobs/46_scheduler_job_inventory.sql" download>46_scheduler_job_inventory.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">List all scheduled jobs, their state, and next run time.</td>
+        </tr>
+
+        <tr>
+          <td class="num">47</td>
+          <td class="scriptname"><a href="scripts/08_scheduling_jobs/47_scheduler_job_run_history.sql" download>47_scheduler_job_run_history.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">Review the last N runs of scheduled jobs, highlighting failures for follow-up.</td>
+        </tr>
+
+        <tr>
+          <td class="num">48</td>
+          <td class="scriptname"><a href="scripts/08_scheduling_jobs/48_legacy_dbms_job_inventory.sql" download>48_legacy_dbms_job_inventory.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Check for older-style DBMS_JOB entries still running in legacy applications.</td>
+        </tr>
+
+        <tr>
+          <td class="num">49</td>
+          <td class="scriptname"><a href="scripts/08_scheduling_jobs/49_scheduler_chain_step_status.sql" download>49_scheduler_chain_step_status.sql</a></td>
+          <td><span class="pill" style="background:#D98E0422;color:#D98E04;">Intermediate</span></td>
+          <td class="purpose">For multi-step job chains, review each step's status - useful for ETL/maintenance chains.</td>
+        </tr>
+
+        <tr>
+          <td class="num">50</td>
+          <td class="scriptname"><a href="scripts/08_scheduling_jobs/50_auto_stats_job_status.sql" download>50_auto_stats_job_status.sql</a></td>
+          <td><span class="pill" style="background:#3FA34D22;color:#3FA34D;">Beginner</span></td>
+          <td class="purpose">Confirm the built-in nightly stats-gathering job is enabled and check its last run.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const links = document.querySelectorAll('.side-link');
+  const pages = document.querySelectorAll('.page');
+  function showPage(name) {
+    pages.forEach(p => p.style.display = (p.id === 'page-' + name) ? '' : 'none');
+    links.forEach(l => l.classList.toggle('active', l.dataset.page === name));
+    window.scrollTo(0, 0);
+  }
+  links.forEach(l => l.addEventListener('click', () => showPage(l.dataset.page)));
+  showPage('overview');
+</script>
+
+</body>
+</html>
